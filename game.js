@@ -41,7 +41,7 @@ class Cake {
         this.y = y;
         this.vx = vx;
         this.vy = vy;
-        this.image = img;
+        this.image = img; // Ensure this.image is assigned correctly
         const scaleFactor = Math.min(canvas.width, canvas.height) / 10; // Scale factor based on screen size
         this.width = img.naturalWidth * scaleFactor / img.naturalWidth;
         this.height = img.naturalHeight * scaleFactor / img.naturalHeight;
@@ -120,8 +120,8 @@ function init() {
             // Ensure the initial position is away from the edges
             const x = Math.random() * (canvas.width - 100) + 50;
             const y = Math.random() * (canvas.height - 100) + 50;
-            const vx = (Math.random() - 0.5) * 4;
-            const vy = (Math.random() - 0.5) * 4;
+            const vx = (Math.random() - 0.5) * 2; // Reduced velocity for more stable animation
+            const vy = (Math.random() - 0.5) * 2; // Reduced velocity for more stable animation
             const img = cakeImages[Math.floor(Math.random() * cakeImages.length)];
             cakes.push(new Cake(x, y, vx, vy, img));
         }
@@ -134,7 +134,7 @@ function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw background
-    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    drawBackground();
 
     for (let cake of cakes) {
         cake.update();
@@ -153,6 +153,26 @@ function animate() {
     }
 
     requestAnimationFrame(animate);
+}
+
+function drawBackground() {
+    const aspectRatioCanvas = canvas.width / canvas.height;
+    const aspectRatioImage = backgroundImage.width / backgroundImage.height;
+    
+    let drawWidth, drawHeight;
+
+    if (aspectRatioCanvas > aspectRatioImage) {
+        drawWidth = canvas.width;
+        drawHeight = canvas.width / aspectRatioImage;
+    } else {
+        drawWidth = canvas.height * aspectRatioImage;
+        drawHeight = canvas.height;
+    }
+
+    const offsetX = (canvas.width - drawWidth) / 2;
+    const offsetY = (canvas.height - drawHeight) / 2;
+
+    ctx.drawImage(backgroundImage, offsetX, offsetY, drawWidth, drawHeight);
 }
 
 function getMousePos(canvas, evt) {
