@@ -42,8 +42,9 @@ class Cake {
         this.vx = vx;
         this.vy = vy;
         this.image = img;
-        this.width = img.naturalWidth;
-        this.height = img.naturalHeight;
+        const scaleFactor = Math.min(canvas.width, canvas.height) / 10; // Scale factor based on screen size
+        this.width = img.naturalWidth * scaleFactor / img.naturalWidth;
+        this.height = img.naturalHeight * scaleFactor / img.naturalHeight;
         this.radius = Math.max(this.width, this.height) / 2;
     }
 
