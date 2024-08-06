@@ -1,8 +1,13 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas(); // Initial call to set canvas size
 
 const cakeImages = [];
 const cakeCount = 5; // Number of different cake images
@@ -28,24 +33,19 @@ function loadImages(callback) {
     }
 }
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-
-window.addEventListener('resize', resizeCanvas);
-
 class Cake {
     constructor(x, y, vx, vy, img) {
         this.x = x;
         this.y = y;
         this.vx = vx;
         this.vy = vy;
-        this.image = img; // Ensure this.image is assigned correctly
-        const scaleFactor = Math.min(canvas.width, canvas.height) / 10; // Scale factor based on screen size
-        this.width = img.naturalWidth * scaleFactor / img.naturalWidth;
-        this.height = img.naturalHeight * scaleFactor / img.naturalHeight;
-        this.radius = Math.max(this.width, this.height) / 2;
+        this.image = img;
+
+        // Ensure consistent scaling based on a fixed size
+        const baseSize = 100; // Base size for cakes
+        this.width = baseSize;
+        this.height = baseSize;
+        this.radius = this.width / 2;
     }
 
     draw() {
